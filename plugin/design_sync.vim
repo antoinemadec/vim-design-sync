@@ -11,8 +11,9 @@ endif
 function DesignSyncDiff() abort
   let remote_file = tempname()
   let current_file = expand('%')
-  let cmd = printf('patch --reverse -o %s < <(dssc diff -unified %s)',
-        \ remote_file, current_file)
+  let current_file_dir = expand('%:h')
+  let cmd = printf('patch --reverse -d %s -o %s < <(dssc diff -unified %s)',
+        \ current_file_dir, remote_file, current_file)
   silent let output = system(cmd)
   if v:shell_error
     echohl WarningMsg | echom "[DesignSync] not part of design sync repo" | echohl None
